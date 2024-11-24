@@ -4,11 +4,15 @@ using System.Collections;
 public class Spawner : MonoBehaviour
 {
     public GameObject obstaclePrefab;
+    public GameObject obstaclePrefab2;
+    public GameObject obstaclePrefab3;
+    public GameObject obstaclePrefab4;
     public float spawnRate = 2f;
+    private int randomObstacle;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(SpawnObstacle());
+        StartCoroutine(SpawnFirstObstacle());
     }
 
     // Update is called once per frame
@@ -17,12 +21,35 @@ public class Spawner : MonoBehaviour
         
     }
 
+    IEnumerator SpawnFirstObstacle()
+    {
+        yield return new WaitForSeconds(spawnRate*1.5f);
+        Instantiate(obstaclePrefab, new Vector3(this.transform.position.x, Random.Range(-3f, 3f), 0), Quaternion.identity);
+        StartCoroutine(SpawnObstacle());
+    }
+
     IEnumerator SpawnObstacle()
     {
         if (!Scoring.gameOver)
         {
             yield return new WaitForSeconds(spawnRate);
-            Instantiate(obstaclePrefab, new Vector3(this.transform.position.x, Random.Range(-3f, 3f), 0), Quaternion.identity);
+            randomObstacle = Random.Range(1, 5);
+            if (randomObstacle == 1)
+            {
+                Instantiate(obstaclePrefab, new Vector3(this.transform.position.x, Random.Range(-3f, 3f), 0), Quaternion.identity);
+            }
+            else if (randomObstacle == 2)
+            {
+                Instantiate(obstaclePrefab2, new Vector3(this.transform.position.x, Random.Range(-3f, 3f), 0), Quaternion.identity);
+            }
+            else if (randomObstacle == 3)
+            {
+                Instantiate(obstaclePrefab3, new Vector3(this.transform.position.x, Random.Range(-3f, 3f), 0), Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(obstaclePrefab4, new Vector3(this.transform.position.x, Random.Range(-3f, 3f), 0), Quaternion.identity);
+            }
             StartCoroutine(SpawnObstacle());
         }
     }
